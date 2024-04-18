@@ -28,7 +28,7 @@ import re
 
 def validate_id(input_id):
     regex = r'^\d+$'    # checks if each number from start to end of the id to see if it matches a number between [0-9]
-    if re.compile(regex).match(input_id):
+    if re.match(regex, input_id):
         return ""
     else:
         return "I"
@@ -52,15 +52,18 @@ def validate_email(email):
 
 def validate_phone(phone):
     regex = r'^\d{3}-\d{3}-\d{4}$'          # checks for 3 numbers - 3 numbers - 4 numbers (must have the hyphens)
-    if re.compile(regex).match(phone):
+    if re.match(regex, phone):
         return ""
     else:
         return "P"
 
 
 def validate_date(date):
-    # MM/DD/YYYY
-    pass
+    regex = r'^\d{2}/\d{2}/\d{4}$'          # checks for MM/DD/YYYY format
+    if re.match(regex, date):
+        return ""
+    else:
+        return "D"
 
 
 def validate_time(time):
@@ -84,13 +87,14 @@ def process_file():
                 error_string += validate_name(line[1])      # Call the validate_name function
                 error_string += validate_email(line[2])     # Call the validate_email function
                 error_string += validate_phone(line[3])     # Call the validate_phone function
+                error_string += validate_date(line[4])      # Call the validate_date function
 
             if error_string == "":
                 if len(line) > 1:
                     names = line[1].split(',')
                     valid_writer.writerow([
                         line[0], names[1].strip(), names[0].strip(),
-                        line[2], line[3]
+                        line[2], line[3], line[4]
                     ])
                 else:
                     line.insert(0, "C")
