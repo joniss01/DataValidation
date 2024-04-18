@@ -35,8 +35,11 @@ def validate_id(input_id):
 
 
 def validate_name(name):
-    # last, first
-    pass
+    names = name.split(',')     # last,first
+    if len(names) == 2:
+        return ""
+    else:
+        return "N"
 
 
 def validate_email(email):
@@ -72,9 +75,15 @@ def process_file():
             data_count = len(line)
             if data_count == 6:
                 error_string += validate_id(line[0])    # Call the validate_id function
+                error_string += validate_name(line[1])  # Call the validate_name function
 
             if error_string == "":
-                valid_writer.writerow(line)
+                if len(line) > 1:
+                    names = line[1].split(',')
+                    valid_writer.writerow([line[0], names[1].strip(), names[0].strip()])
+                else:
+                    line.insert(0, "C")
+                    invalid_writer.writerow(line)
             else:
                 line.insert(0, error_string)
                 invalid_writer.writerow(line)
