@@ -67,7 +67,7 @@ def validate_date(date):
 
 
 def validate_time(time):
-    regex = r'^([1]\d|2[0-3]):([0-5]\d)$'       # HH:MM military only allows 00-23 hours and 00-59 minutes
+    regex = r'^([1]\d|2[0-3]):([0-5]\d)$'       # HH:MM military only allows 00-23 hours and 00-59 minutes to be valid
     if re.match(regex, time):
         return ""
     else:
