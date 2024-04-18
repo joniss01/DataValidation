@@ -43,8 +43,11 @@ def validate_name(name):
 
 
 def validate_email(email):
-    # need @ and .edu
-    pass
+    regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(?:edu)$'    # checks for letters and numbers in a standard email
+    if re.match(regex, email):                                # but need @ and .edu to be valid
+        return ""
+    else:
+        return "E"
 
 
 def validate_phone(phone):
@@ -76,11 +79,12 @@ def process_file():
             if data_count == 6:
                 error_string += validate_id(line[0])    # Call the validate_id function
                 error_string += validate_name(line[1])  # Call the validate_name function
+                error_string += validate_email(line[2]) # Call the validate_email function
 
             if error_string == "":
                 if len(line) > 1:
                     names = line[1].split(',')
-                    valid_writer.writerow([line[0], names[1].strip(), names[0].strip()])
+                    valid_writer.writerow([line[0], names[1].strip(), names[0].strip(), line[2]])
                 else:
                     line.insert(0, "C")
                     invalid_writer.writerow(line)
