@@ -59,16 +59,19 @@ def validate_phone(phone):
 
 
 def validate_date(date):
-    regex = r'^\d{2}/\d{2}/\d{4}$'          # checks for MM/DD/YYYY format
-    if re.match(regex, date):
+    regex = r'^(0[1-9]|1[0-2])/(0[1-9]|1\d|2\d|3[01])/\d{4}$'          # checks for MM/DD/YYYY format
+    if re.match(regex, date):                                          # updated to accept 1-12 months and 0-31 days
         return ""
     else:
         return "D"
 
 
 def validate_time(time):
-    # HH:MM military
-    pass
+    regex = r'^([1]\d|2[0-3]):([0-5]\d)$'       # HH:MM military only allows 00-23 hours and 00-59 minutes
+    if re.match(regex, time):
+        return ""
+    else:
+        return "T"
 
 
 def process_file():
@@ -88,13 +91,14 @@ def process_file():
                 error_string += validate_email(line[2])     # Call the validate_email function
                 error_string += validate_phone(line[3])     # Call the validate_phone function
                 error_string += validate_date(line[4])      # Call the validate_date function
+                error_string += validate_time(line[5])      # Call the validate_time function
 
             if error_string == "":
                 if len(line) > 1:
                     names = line[1].split(',')
                     valid_writer.writerow([
                         line[0], names[1].strip(), names[0].strip(),
-                        line[2], line[3], line[4]
+                        line[2], line[3], line[4], line[5]
                     ])
                 else:
                     line.insert(0, "C")
