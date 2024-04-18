@@ -22,6 +22,9 @@ __version__ = '1.0'
 __date__ = '4/16/2024'
 __status__ = 'Development'
 
+import csv
+import re
+
 
 def validate_id(id):
     # regex [0-9]?
@@ -56,9 +59,15 @@ def validate_time(time):
 
 
 def process_file():
-    # with open("input.csv") as my_file:
-    #     ?print?(my_file.read())
-    pass
+    with open("input.csv", newline='') as input_file, \
+         open("valid.csv", 'w', newline='') as valid_file, \
+         open("invalid.csv", 'w', newline='') as invalid_file:
+        input_reader = csv.reader(input_file, delimiter='|')
+        valid_writer = csv.writer(valid_file, delimiter=',')
+        invalid_writer = csv.writer(invalid_file, delimiter='|')
+
+        for line in input_reader:
+            valid_writer.writerow(line)
 
 
 if __name__ == '__main__':
