@@ -26,11 +26,12 @@ import csv
 import re
 
 
-def validate_id(id):
-    # regex [0-9]?
-    # if re.compile(regex, id):
-    #    return
-    pass
+def validate_id(input_id):
+    regex = r'^\d+$'    # checks if each number from start to end of the id to see if it matches a number between [0-9]
+    if re.compile(regex).match(input_id):
+        return ""
+    else:
+        return "I"
 
 
 def validate_name(name):
@@ -67,7 +68,16 @@ def process_file():
         invalid_writer = csv.writer(invalid_file, delimiter='|')
 
         for line in input_reader:
-            valid_writer.writerow(line)
+            error_string = ""
+            data_count = len(line)
+            if data_count == 6:
+                error_string += validate_id(line[0])    # Call the validate_id function
+
+            if error_string == "":
+                valid_writer.writerow(line)
+            else:
+                line.insert(0, error_string)
+                invalid_writer.writerow(line)
 
 
 if __name__ == '__main__':
