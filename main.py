@@ -51,8 +51,11 @@ def validate_email(email):
 
 
 def validate_phone(phone):
-    # 111-222-3333
-    pass
+    regex = r'^\d{3}-\d{3}-\d{4}$'          # checks for 3 numbers - 3 numbers - 4 numbers (must have the hyphens)
+    if re.compile(regex).match(phone):
+        return ""
+    else:
+        return "P"
 
 
 def validate_date(date):
@@ -77,14 +80,18 @@ def process_file():
             error_string = ""
             data_count = len(line)
             if data_count == 6:
-                error_string += validate_id(line[0])    # Call the validate_id function
-                error_string += validate_name(line[1])  # Call the validate_name function
-                error_string += validate_email(line[2]) # Call the validate_email function
+                error_string += validate_id(line[0])        # Call the validate_id function
+                error_string += validate_name(line[1])      # Call the validate_name function
+                error_string += validate_email(line[2])     # Call the validate_email function
+                error_string += validate_phone(line[3])     # Call the validate_phone function
 
             if error_string == "":
                 if len(line) > 1:
                     names = line[1].split(',')
-                    valid_writer.writerow([line[0], names[1].strip(), names[0].strip(), line[2]])
+                    valid_writer.writerow([
+                        line[0], names[1].strip(), names[0].strip(),
+                        line[2], line[3]
+                    ])
                 else:
                     line.insert(0, "C")
                     invalid_writer.writerow(line)
