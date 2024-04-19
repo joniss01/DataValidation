@@ -126,8 +126,11 @@ def process_file():
 
         for line in input_reader:
             error_string = ""
-            data_count = len(line)
-            if data_count == 6:
+            if len(line) != 6:
+                # If input doesnt have all 6 data types, send it to invalid with an error type 'C' without other
+                # validations
+                error_string = "C"
+            else:
                 error_string += validate_id(line[0])        # Call the validate_id function
                 error_string += validate_name(line[1])      # Call the validate_name function
                 error_string += validate_email(line[2])     # Call the validate_email function
@@ -137,15 +140,14 @@ def process_file():
 
             if error_string == "":
                 if len(line) > 1:
-                    names = line[1].split(',')
+                    # If there are no errors found in the input, write it to valid.csv
+                    names = line[1].split(',')      # Separates names with comma and eventually strips spaces
                     valid_writer.writerow([
                         line[0], names[1].strip(), names[0].strip(),
                         line[2], line[3], line[4], line[5]
                     ])
-                else:
-                    line.insert(0, "C")
-                    invalid_writer.writerow(line)
             else:
+                # Adds the error type to the beginning of the record and writes the invalid record to invalid.csv
                 line.insert(0, error_string)
                 invalid_writer.writerow(line)
 
