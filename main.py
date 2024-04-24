@@ -117,6 +117,16 @@ def process_file():
     and an error code indicating the type of validation error(s) can be found on the left side of the record.
     :return: None
     """
+    valid_record_count = 0
+    invalid_record_count = 0
+    invalid_element_count = 0
+    invalid_id_count = 0
+    invalid_name_count = 0
+    invalid_email_count = 0
+    invalid_phone_count = 0
+    invalid_date_count = 0
+    invalid_time_count = 0
+
     with open("input.csv", newline='') as input_file, \
          open("valid.csv", 'w', newline='') as valid_file, \
          open("invalid.csv", 'w', newline='') as invalid_file:
@@ -130,6 +140,7 @@ def process_file():
                 # If input doesnt have all 6 data types, send it to invalid with an error type 'C' without other
                 # validations
                 error_string = "C"
+                invalid_element_count += 1
             else:
                 error_string += validate_id(line[0])        # Call the validate_id function
                 error_string += validate_name(line[1])      # Call the validate_name function
@@ -146,10 +157,65 @@ def process_file():
                         line[0], names[1].strip(), names[0].strip(),
                         line[2], line[3], line[4], line[5]
                     ])
+                    valid_record_count += 1  # Increment valid record count
             else:
                 # Adds the error type to the beginning of the record and writes the invalid record to invalid.csv
                 line.insert(0, error_string)
                 invalid_writer.writerow(line)
+
+                # Update counts for invalid types
+                if 'I' in error_string:
+                    invalid_id_count += 1
+                if 'N' in error_string:
+                    invalid_name_count += 1
+                if 'E' in error_string:
+                    invalid_email_count += 1
+                if 'P' in error_string:
+                    invalid_phone_count += 1
+                if 'D' in error_string:
+                    invalid_date_count += 1
+                if 'T' in error_string:
+                    invalid_time_count += 1
+
+                # Increment invalid record count
+                invalid_record_count += 1
+
+    generate_report(valid_record_count, invalid_record_count, invalid_element_count, invalid_id_count,
+                    invalid_name_count, invalid_email_count, invalid_phone_count, invalid_date_count,
+                    invalid_time_count)
+
+
+def generate_report(valid_record_count, invalid_record_count, invalid_element_count, invalid_id_count,
+                    invalid_name_count, invalid_email_count, invalid_phone_count, invalid_date_count,
+                    invalid_time_count):
+    """
+    Generates and prints the data validation report.
+    :param valid_record_count: Number of valid records.
+    :param invalid_record_count: Number of invalid records.
+    :param invalid_element_count: Number of records with incorrect number of elements.
+    :param invalid_id_count: Number of records with invalid IDs.
+    :param invalid_name_count: Number of records with invalid names.
+    :param invalid_email_count: Number of records with invalid emails.
+    :param invalid_phone_count: Number of records with invalid phone numbers.
+    :param invalid_date_count: Number of records with invalid dates.
+    :param invalid_time_count: Number of records with invalid times.
+    """
+    print("=====================")
+    print("Data Validation Report")
+    print("=====================")
+    total_records = valid_record_count + invalid_record_count
+    print(f"{'Total Records:': >17} {total_records: >3}\n")
+    print(f"{'Valid Records:': >17} {valid_record_count: >3}")
+    print(f"{'Invalid Records:': >17} {invalid_record_count: >3}\n")
+    print("LIST OF INVALID TYPES")
+    print("---------------------")
+    print(f"{'Count:': >17} {invalid_element_count: >3}")
+    print(f"{'ID:': >17} {invalid_id_count: >3}")
+    print(f"{'Name:': >17} {invalid_name_count: >3}")
+    print(f"{'Email:': >17} {invalid_email_count: >3}")
+    print(f"{'Phone:': >17} {invalid_phone_count: >3}")
+    print(f"{'Date:': >17} {invalid_date_count: >3}")
+    print(f"{'Time:': >17} {invalid_time_count: >3}")
 
 
 if __name__ == '__main__':
