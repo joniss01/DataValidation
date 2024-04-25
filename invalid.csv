@@ -1,3 +1,7 @@
 INEPDT|abc|Johnson|dejohns2@gmail.com|1112223333|12/31/80|1340
-PDT|1234|Nissen, Jonathan|joniss01@wsc.edu|111/222/3333|13/32/2024|24:59
-C|123|Bob, Billy|billybob@wsc.edu|123-456-7890|07/04/2024
+PDT|1234|Nissen,Jonathan|joniss01@wsc.edu|111/222/3333|13/32/2024|24:59
+C|123|Bob,Billy|billybob@wsc.edu|123-456-7890|07/04/2024
+IEPDT|123abc|Guy,Cool|coolguy.com|1-800-588-2300|01-01/2024|00:28
+C|12|Data,No|nodata@gmail.com|12:30
+IPT|aa|Doe,John|johndoe@wsc.edu|111-22-3333|05/03/2024|9:00
+NEDT|19|Joe|JoeJoe@gmail.com|123-456-7890|111/24/2024|23:0
