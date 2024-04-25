@@ -14,6 +14,8 @@ The data validator will check for:
     T = Invalid time that are not in a HH:MM military format
 
 A report will be displayed to show the invalid data types from the input using the letters from above.
+
+GitHub: https://github.com/joniss01/DataValidation/tree/master
 """
 
 __author__ = 'Jonathan Nissen'
