@@ -23,6 +23,7 @@ __status__ = 'Development'
 
 import csv
 import re
+from datetime import datetime
 
 
 def validate_id(input_id):
@@ -153,9 +154,14 @@ def process_file():
                 if len(line) > 1:
                     # If there are no errors found in the input, write it to valid.csv
                     names = line[1].split(',')      # Separates names with comma and eventually strips spaces
+                    # I had the right idea but needed chatGPT to help me over the last hurdle
+                    # https://chat.openai.com/share/4185e028-1471-4037-867d-878e09313f9a
+                    original_date = datetime.strptime(line[4], '%m/%d/%Y')  # date to be reformatted
+                    reformatted_date = original_date.strftime('%Y-%m-%d')   # Reformat the date and replace '/' to '-'
                     valid_writer.writerow([
                         line[0], names[1].strip(), names[0].strip(),
-                        line[2], line[3], line[4], line[5]
+                        line[2], line[3].replace("-", "."),
+                        reformatted_date, line[5]
                     ])
                     valid_record_count += 1  # Increment valid record count
             else:
